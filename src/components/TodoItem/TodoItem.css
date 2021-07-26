@@ -1,0 +1,7 @@
+.actions {
+  margin: 20px 0;
+}
+
+.actions > button {
+  margin-right: 20px;
+}
