@@ -1,25 +1,37 @@
+import { useSelector, useDispatch } from "react-redux";
+import { getTasks } from "../../../store/todoSlice";
 import s from "./tasks.module.scss";
 import classNames from "classnames";
+import { removeOne, toggleTaskCompleted } from "../../../store/todoSlice";
 
-const Tasks = ({ tasks, remove, update }) => {
+const Tasks = ({ todoId }) => {
+  const tasks = useSelector((state) => getTasks(state, { todoId }));
+  const dispatch = useDispatch();
+
   return (
     <div className={s.items}>
-      {tasks &&
-        tasks.map((item) => (
-          <div className={s.item} key={item.id}>
+      {tasks.length > 0 &&
+        tasks.map((task) => (
+          <div className={s.item} key={task.id}>
             <input
               type="checkbox"
-              onChange={(e) => update(item)}
-              checked={item.isCompleted}
+              onChange={(e) =>
+                dispatch(toggleTaskCompleted({ todoId, taskId: task.id }))
+              }
+              checked={task.isCompleted}
             />
             <span
               className={classNames(s.itemName, {
-                [s.striked]: item.isCompleted,
+                [s.striked]: task.isCompleted,
               })}
             >
-              {item.task}
+              {task.task}
             </span>
-            <button onClick={() => remove(item)}>Remove</button>
+            <button
+              onClick={() => dispatch(removeOne({ todoId, taskId: task.id }))}
+            >
+              Remove
+            </button>
           </div>
         ))}
 

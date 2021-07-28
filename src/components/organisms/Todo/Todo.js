@@ -1,34 +1,23 @@
+import { useSelector } from "react-redux";
 import Input from "../../atoms/Input";
 import Tasks from "../../atoms/Tasks";
 import TodoButtons from "../../atoms/TodoButtons";
-import useTodo from "./useTodo";
+import { Link, useParams } from "react-router-dom";
+import { getTodo } from "../../../store/todoSlice";
 
 const Todo = () => {
-  const [
-    tasks,
-    input,
-    setInput,
-    add,
-    remove,
-    update,
-    checkAll,
-    unCheckAll,
-    removeAllChecked,
-    removeAll,
-  ] = useTodo();
+  const { id } = useParams();
+  const todo = useSelector((state) => getTodo(state, { todoId: id }));
 
   return (
     <div>
-      <Input input={input} setInput={setInput} add={add} />
-      <Tasks tasks={tasks} remove={remove} update={update} />
-      {tasks.length > 0 && (
-        <TodoButtons
-          checkAll={checkAll}
-          unCheckAll={unCheckAll}
-          removeAllChecked={removeAllChecked}
-          removeAll={removeAll}
-        />
-      )}
+      <h2>{todo.title}</h2>
+      <Link to={"/"}>
+        <button className="btn-back">Back</button>
+      </Link>
+      <Input id={todo.id} />
+      <Tasks todoId={todo.id} />
+      {todo.tasks.length > 0 && <TodoButtons todoId={todo.id} />}
     </div>
   );
 };
