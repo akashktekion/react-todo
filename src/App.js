@@ -1,5 +1,5 @@
 import s from "./App.module.scss";
-import Todo from "./components/Todo";
+import Todo from "./components/organisms/Todo";
 
 function App() {
   return (
