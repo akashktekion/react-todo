@@ -1,9 +1,11 @@
-import './App.css';
+import s from "./App.module.scss";
+import Todo from "./components/organisms/Todo";
 
 function App() {
   return (
-    <div className="App">
-      <h1>Hello World!</h1>
+    <div className={s.App}>
+      <h1>Todos</h1>
+      <Todo />
     </div>
   );
 }
