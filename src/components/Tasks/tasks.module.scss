@@ -2,9 +2,12 @@
   margin: 20px 0;
   .item {
     margin-bottom: 5px;
-    .item-name {
+    .itemName {
       margin-left: 5px;
       margin-right: 20px;
+      &.striked {
+        text-decoration: line-through;
+      }
     }
   }
 }

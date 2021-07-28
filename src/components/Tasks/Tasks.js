@@ -1,31 +1,29 @@
-import "./tasks.scss";
+import s from "./tasks.module.scss";
+import classNames from "classnames";
 
-const Tasks = ({ list, remove, update }) => {
+const Tasks = ({ tasks, remove, update }) => {
   return (
-    <div className="items">
-      {list &&
-        list.map((item) => (
-          <div className="item" key={item.id}>
+    <div className={s.items}>
+      {tasks &&
+        tasks.map((item) => (
+          <div className={s.item} key={item.id}>
             <input
               type="checkbox"
               onChange={(e) => update(item)}
               checked={item.isCompleted}
             />
             <span
-              className="item-name"
-              style={{
-                textDecoration: item.isCompleted ? "line-through" : "none",
-              }}
+              className={classNames(s.itemName, {
+                [s.striked]: item.isCompleted,
+              })}
             >
               {item.task}
             </span>
-            <button className="remove" onClick={() => remove(item)}>
-              Remove
-            </button>
+            <button onClick={() => remove(item)}>Remove</button>
           </div>
         ))}
 
-      {list.length === 0 && <p>No Tasks Yet!</p>}
+      {tasks.length === 0 && <p>No Tasks Yet!</p>}
     </div>
   );
 };

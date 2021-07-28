@@ -1,11 +1,11 @@
 import Input from "../Input";
 import Tasks from "../Tasks";
-import "./todo.scss";
+import TodoButtons from "../TodoButtons";
 import useTodo from "./useTodo";
 
 const Todo = () => {
   const [
-    list,
+    tasks,
     input,
     setInput,
     add,
@@ -18,23 +18,17 @@ const Todo = () => {
   ] = useTodo();
 
   return (
-    <div className="todo">
+    <div>
       <Input input={input} setInput={setInput} add={add} />
-      <Tasks list={list} remove={remove} update={update} />
-      <div className="actions">
-        <button className="check-all" onClick={checkAll}>
-          Check All
-        </button>
-        <button className="uncheck-all" onClick={unCheckAll}>
-          Uncheck All
-        </button>
-        <button className="remove-all-checked" onClick={removeAllChecked}>
-          Remove All Checked
-        </button>
-        <button className="remove-all" onClick={removeAll}>
-          Remove All
-        </button>
-      </div>
+      <Tasks tasks={tasks} remove={remove} update={update} />
+      {tasks.length > 0 && (
+        <TodoButtons
+          checkAll={checkAll}
+          unCheckAll={unCheckAll}
+          removeAllChecked={removeAllChecked}
+          removeAll={removeAll}
+        />
+      )}
     </div>
   );
 };
