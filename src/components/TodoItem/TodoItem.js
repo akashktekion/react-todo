@@ -1,77 +1,55 @@
 import { useState } from "react";
-import Input from "../Input/Input";
-import Items from "../Items/Items";
+import { Link } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { useParams } from "react-router-dom";
 import "./TodoItem.css";
+import {
+  addTodoTask,
+  getTodo,
+  checkAll,
+  unCheckAll,
+  removeAllChecked,
+  removeAll,
+} from "../../redux/todosSlice";
+import Items from "../Items/Items";
+import Input from "../Input/Input";
 
 const TodoItem = () => {
-  const [list, setList] = useState([]);
+  const { id } = useParams();
   const [input, setInput] = useState("");
+
+  const todo = useSelector((state) => getTodo(state, id));
+  const dispatch = useDispatch();
 
   const add = () => {
     if (input) {
-      const newList = [...list];
-      newList.push({ id: Date.now(), task: input, isCompleted: false });
-      setList(newList);
-      setInput("");
+      dispatch(addTodoTask({ input, id }));
     }
-  };
-
-  const remove = (item) => {
-    const newList = list.filter((el) => el.id !== item.id);
-    setList(newList);
-  };
-
-  const update = (item) => {
-    const newList = list.map((el) => {
-      if (el.id === item.id) {
-        el.isCompleted = !el.isCompleted;
-      }
-      return el;
-    });
-
-    setList(newList);
-  };
-
-  const checkAll = () => {
-    const newList = list.map((item) => {
-      item.isCompleted = true;
-      return item;
-    });
-    setList(newList);
-  };
-
-  const unCheckAll = () => {
-    const newList = list.map((item) => {
-      item.isCompleted = false;
-      return item;
-    });
-    setList(newList);
-  };
-
-  const removeAllChecked = () => {
-    const newList = list.filter((item) => !item.isCompleted);
-    setList(newList);
-  };
-
-  const removeAll = () => {
-    setList([]);
+    setInput(""); // TODO
   };
 
   return (
     <div className="todo">
+      <h2>{todo.title}</h2>
+      <Link to={"/"}>
+        <button className="btn-back">Back</button>
+      </Link>
       <Input input={input} setInput={setInput} add={add} />
-      <Items list={list} remove={remove} update={update} />
+      <Items todoId={todo.id} />
       <div className="actions">
-        <button className="check-all" onClick={checkAll}>
+        <button className="check-all" onClick={dispatch(checkAll(id))}>
           Check All
         </button>
-        <button className="uncheck-all" onClick={unCheckAll}>
+        <button className="uncheck-all" onClick={dispatch(unCheckAll(id))}>
           Uncheck All
         </button>
-        <button className="remove-all-checked" onClick={removeAllChecked}>
+        <button
+          className="remove-all-checked"
+          onClick={dispatch(removeAllChecked(id))}
+        >
           Remove All Checked
         </button>
-        <button className="remove-all" onClick={removeAll}>
+        <button className="remove-all" onClick={dispatch(removeAll(id))}>
           Remove All
         </button>
       </div>

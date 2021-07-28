@@ -1,14 +1,18 @@
+import { useSelector, useDispatch } from "react-redux";
+import { getTasks } from "../../redux/todosSlice";
 import "./Items.css";
 
-const Items = ({ list, remove, update }) => {
+const Items = ({ todoId }) => {
+  const tasks = useSelector((state) => getTasks(state, todoId));
+  // const dispatch = useDispatch();
   return (
     <div className="items">
-      {list &&
-        list.map((item) => (
+      {tasks &&
+        tasks.map((item) => (
           <div className="item" key={item.id}>
             <input
               type="checkbox"
-              onChange={(e) => update(item)}
+              onChange={(e) => {}}
               checked={item.isCompleted}
             />
             <span
@@ -19,13 +23,13 @@ const Items = ({ list, remove, update }) => {
             >
               {item.task}
             </span>
-            <button className="remove" onClick={() => remove(item)}>
+            {/* <button className="remove" onClick={() => remove(item)}>
               Remove
-            </button>
+            </button> */}
           </div>
         ))}
 
-      {list.length === 0 && <p>No Tasks Yet!</p>}
+      {tasks.length === 0 && <p>No Tasks Yet!</p>}
     </div>
   );
 };
