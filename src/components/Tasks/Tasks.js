@@ -1,6 +1,6 @@
-import "./Items.css";
+import "./tasks.scss";
 
-const Items = ({ list, remove, update }) => {
+const Tasks = ({ list, remove, update }) => {
   return (
     <div className="items">
       {list &&
@@ -30,4 +30,4 @@ const Items = ({ list, remove, update }) => {
   );
 };
 
-export default Items;
+export default Tasks;
