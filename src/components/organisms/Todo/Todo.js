@@ -1,6 +1,6 @@
 import Input from "../Input";
-import Tasks from "../Tasks";
-import TodoButtons from "../TodoButtons";
+import Tasks from "./Tasks";
+import TodoButtons from "./TodoButtons";
 import useTodo from "./useTodo";
 
 const Todo = () => {

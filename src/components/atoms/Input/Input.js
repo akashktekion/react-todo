@@ -1,8 +1,8 @@
-import "./input.scss";
+import s from "./input.module.scss";
 
 const Input = ({ add, input, setInput }) => {
   return (
-    <div className="input">
+    <div className={s.input}>
       <input
         type="text"
         value={input}
