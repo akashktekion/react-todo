@@ -56,7 +56,6 @@ export const todosSlice = createSlice({
       });
     },
     removeOne: (state, action) => {
-      console.log(action);
       state.todos.map((item) => {
         if (item.id === action.payload.todoId) {
           item.tasks = item.tasks.filter(
