@@ -4,7 +4,7 @@ import Tasks from "../../atoms/Tasks";
 import TodoButtons from "../../atoms/TodoButtons";
 import { Link, useParams } from "react-router-dom";
 import { getTodo } from "../../../store/todoSlice";
-import useInput from "../../atoms/Input/useInput";
+import useInput from "../../utilities/useInput";
 
 const Todo = () => {
   const { id } = useParams();

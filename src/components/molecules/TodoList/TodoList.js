@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Input from "../../atoms/Input";
 import { getTodos } from "../../../store/todoSlice";
 import s from "./todoList.module.scss";
-import useInput from "../../atoms/Input/useInput";
+import useInput from "../../utilities/useInput";
 
 const TodoList = () => {
   const todos = useSelector(getTodos);
