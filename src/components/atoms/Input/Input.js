@@ -1,8 +1,6 @@
 import s from "./input.module.scss";
-import useInput from "./useInput";
 
-const Input = ({ id }) => {
-  const [input, setInput, add] = useInput(id);
+const Input = ({ input, setInput, add }) => {
   return (
     <div className={s.input}>
       <input

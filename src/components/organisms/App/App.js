@@ -1,11 +1,11 @@
-import s from "./App.module.scss";
-import Todo from "./components/organisms/Todo";
-import TodoList from "./components/organisms/TodoList";
+import s from "./app.module.scss";
+import Todo from "../../molecules/Todo";
+import TodoList from "../../molecules/TodoList";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
 function App() {
   return (
-    <div className={s.App}>
+    <div className={s.app}>
       <h3>My Todos App</h3>
       <Router>
         <Switch>

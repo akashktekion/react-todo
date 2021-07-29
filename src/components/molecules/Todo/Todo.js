@@ -4,10 +4,13 @@ import Tasks from "../../atoms/Tasks";
 import TodoButtons from "../../atoms/TodoButtons";
 import { Link, useParams } from "react-router-dom";
 import { getTodo } from "../../../store/todoSlice";
+import useInput from "../../atoms/Input/useInput";
 
 const Todo = () => {
   const { id } = useParams();
   const todo = useSelector((state) => getTodo(state, { todoId: id }));
+
+  const [input, setInput, add] = useInput(id);
 
   return (
     <div>
@@ -15,7 +18,7 @@ const Todo = () => {
       <Link to={"/"}>
         <button className="btn-back">Back</button>
       </Link>
-      <Input id={todo.id} />
+      <Input input={input} setInput={setInput} add={add} />
       <Tasks todoId={todo.id} />
       {todo.tasks.length > 0 && <TodoButtons todoId={todo.id} />}
     </div>

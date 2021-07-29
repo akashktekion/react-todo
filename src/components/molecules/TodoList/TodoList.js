@@ -3,13 +3,16 @@ import { Link } from "react-router-dom";
 import Input from "../../atoms/Input";
 import { getTodos } from "../../../store/todoSlice";
 import s from "./todoList.module.scss";
+import useInput from "../../atoms/Input/useInput";
 
 const TodoList = () => {
   const todos = useSelector(getTodos);
 
+  const [input, setInput, add] = useInput();
+
   return (
     <div>
-      <Input />
+      <Input input={input} setInput={setInput} add={add} />
       <div>
         {todos &&
           todos.map((todo) => (
