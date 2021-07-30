@@ -1,0 +1,10 @@
+.item {
+  margin-bottom: 5px;
+  .itemName {
+    margin-left: 5px;
+    margin-right: 20px;
+    &.striked {
+      text-decoration: line-through;
+    }
+  }
+}

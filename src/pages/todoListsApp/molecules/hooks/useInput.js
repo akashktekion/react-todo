@@ -1,17 +1,18 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { addNewTodo, addTodoTask } from "../../store/todoSlice";
 
-export default function useInput(id = null) {
+import { addTodoList, addTodoItem } from "../../../../store/reducers/todoSlice";
+
+export default function useInput(todoListId = null) {
   const [input, setInput] = useState("");
   const dispatch = useDispatch();
 
   const add = () => {
     if (input) {
-      if (!id) {
-        dispatch(addNewTodo(input));
+      if (!todoListId) {
+        dispatch(addTodoList(input));
       } else {
-        dispatch(addTodoTask({ input, todoId: id }));
+        dispatch(addTodoItem({ input, todoListId }));
       }
     }
     setInput("");

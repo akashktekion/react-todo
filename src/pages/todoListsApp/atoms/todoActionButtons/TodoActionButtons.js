@@ -1,13 +1,14 @@
-import s from "./todoButtons.module.scss";
 import { useDispatch } from "react-redux";
+
+import s from "./todoActionButtons.module.scss";
 import {
   checkAll,
   unCheckAll,
   removeAllChecked,
   removeAll,
-} from "../../../store/todoSlice";
+} from "../../../../store/reducers/todoSlice";
 
-const TodoButtons = ({ todoId }) => {
+const TodoActionButtons = ({ todoId }) => {
   const dispatch = useDispatch();
 
   return (
@@ -26,4 +27,4 @@ const TodoButtons = ({ todoId }) => {
   );
 };
 
-export default TodoButtons;
+export default TodoActionButtons;

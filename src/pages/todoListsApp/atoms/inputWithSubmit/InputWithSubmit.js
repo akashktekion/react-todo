@@ -1,6 +1,6 @@
-import s from "./input.module.scss";
+import s from "./inputWithSubmit.module.scss";
 
-const Input = ({ input, setInput, add }) => {
+const InputWithSubmit = ({ input, setInput, add }) => {
   return (
     <div className={s.input}>
       <input
@@ -14,4 +14,4 @@ const Input = ({ input, setInput, add }) => {
   );
 };
 
-export default Input;
+export default InputWithSubmit;
