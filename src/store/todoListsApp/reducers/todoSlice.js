@@ -3,7 +3,19 @@ import { createSlice } from "@reduxjs/toolkit";
 export const todosSlice = createSlice({
   name: "todoListsApp",
   initialState: {
-    todoLists: [],
+    todoLists: [
+      {
+        todoListId: "" + Date.now(),
+        todoListName: "TodoList 1",
+        todoItems: [
+          {
+            todoItemId: "" + Date.now(),
+            todoItemName: "TodoItem 1",
+            isCompleted: false,
+          },
+        ],
+      },
+    ],
   },
   reducers: {
     addTodoList: (state, action) => {
@@ -29,7 +41,7 @@ export const todosSlice = createSlice({
     },
     checkAll: (state, action) => {
       state.todoLists.map((todoList) => {
-        if (todoList.id === action.payload.todoListId) {
+        if (todoList.todoListId === action.payload.todoListId) {
           todoList.todoItems.map((todoItem) => (todoItem.isCompleted = true));
         }
         return todoList;
@@ -37,7 +49,7 @@ export const todosSlice = createSlice({
     },
     unCheckAll: (state, action) => {
       state.todoLists.map((todoList) => {
-        if (todoList.id === action.payload.todoListId) {
+        if (todoList.todoListId === action.payload.todoListId) {
           todoList.todoItems.map((todoItem) => (todoItem.isCompleted = false));
         }
         return todoList;
@@ -45,7 +57,7 @@ export const todosSlice = createSlice({
     },
     removeAllChecked: (state, action) => {
       state.todoLists.map((todoList) => {
-        if (todoList.id === action.payload.todoListId) {
+        if (todoList.todoListId === action.payload.todoListId) {
           todoList.todoItems = todoList.todoItems.filter(
             (todoItem) => !todoItem.isCompleted
           );
@@ -55,27 +67,27 @@ export const todosSlice = createSlice({
     },
     removeAll: (state, action) => {
       state.todoLists.map((todoList) => {
-        if (todoList.id === action.payload.todoListId) {
+        if (todoList.todoListId === action.payload.todoListId) {
           todoList.todoItems = [];
         }
         return todoList;
       });
     },
     removeOne: (state, action) => {
-      state.todoLists.map((item) => {
-        if (item.id === action.payload.todoListId) {
-          item.todoItems = item.todoItems.filter(
-            (todoItem) => todoItem.id !== action.payload.todoItemId
+      state.todoLists.map((todoList) => {
+        if (todoList.todoListId === action.payload.todoListId) {
+          todoList.todoItems = todoList.todoItems.filter(
+            (todoItem) => todoItem.todoItemId !== action.payload.todoItemId
           );
         }
-        return item;
+        return todoList;
       });
     },
     toggleTaskCompleted: (state, action) => {
       state.todoLists.map((todoList) => {
-        if (todoList.id === action.payload.todoListId) {
+        if (todoList.todoListId === action.payload.todoListId) {
           todoList.todoItems = todoList.todoItems.map((todoItem) => {
-            if (todoItem.id === action.payload.todoItemId) {
+            if (todoItem.todoItemId === action.payload.todoItemId) {
               todoItem.isCompleted = !todoItem.isCompleted;
             }
             return todoItem;

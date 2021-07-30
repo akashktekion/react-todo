@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import Input from "../../atoms/inputWithSubmit";
-import { getTodoLists } from "../../../../store/reducers/todoSlice";
+import { getTodoLists } from "../../../../store/todoListsApp/reducers/todoSlice";
 import s from "./todoLists.module.scss";
 import useInput from "../hooks/useInput";
 

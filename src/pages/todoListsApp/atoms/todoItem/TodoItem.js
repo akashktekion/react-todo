@@ -5,23 +5,27 @@ import s from "./todoItem.module.scss";
 import {
   removeOne,
   toggleTaskCompleted,
-} from "../../../../store/reducers/todoSlice";
+} from "../../../../store/todoListsApp/reducers/todoSlice";
 
 const TodoItem = ({ todoListId, todoItem }) => {
   const dispatch = useDispatch();
+
+  const checkBoxToggleHandler = (e) =>
+    dispatch(
+      toggleTaskCompleted({
+        todoListId,
+        todoItemId: todoItem.todoItemId,
+      })
+    );
+
+  const removeBtnHandler = () =>
+    dispatch(removeOne({ todoListId, todoItemId: todoItem.todoItemId }));
 
   return (
     <div className={s.item} key={todoItem.todoItemId}>
       <input
         type="checkbox"
-        onChange={(e) =>
-          dispatch(
-            toggleTaskCompleted({
-              todoListId,
-              todoItemId: todoItem.todoItemId,
-            })
-          )
-        }
+        onChange={checkBoxToggleHandler}
         checked={todoItem.isCompleted}
       />
       <span
@@ -31,13 +35,7 @@ const TodoItem = ({ todoListId, todoItem }) => {
       >
         {todoItem.todoItemName}
       </span>
-      <button
-        onClick={() =>
-          dispatch(removeOne({ todoListId, todoItemId: todoItem.todoItemId }))
-        }
-      >
-        Remove
-      </button>
+      <button onClick={removeBtnHandler}>Remove</button>
     </div>
   );
 };

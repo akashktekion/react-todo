@@ -6,23 +6,23 @@ import {
   unCheckAll,
   removeAllChecked,
   removeAll,
-} from "../../../../store/reducers/todoSlice";
+} from "../../../../store/todoListsApp/reducers/todoSlice";
 
-const TodoActionButtons = ({ todoId }) => {
+const TodoActionButtons = ({ todoListId }) => {
   const dispatch = useDispatch();
+
+  const checkAllHandler = () => dispatch(checkAll({ todoListId }));
+  const unCheckAllHandler = () => dispatch(unCheckAll({ todoListId }));
+  const removeAllCheckedHandler = () =>
+    dispatch(removeAllChecked({ todoListId }));
+  const removeAllHandler = () => dispatch(removeAll({ todoListId }));
 
   return (
     <div className={s.actions}>
-      <button onClick={() => dispatch(checkAll({ todoId }))}>Check All</button>
-      <button onClick={() => dispatch(unCheckAll({ todoId }))}>
-        Uncheck All
-      </button>
-      <button onClick={() => dispatch(removeAllChecked({ todoId }))}>
-        Remove All Checked
-      </button>
-      <button onClick={() => dispatch(removeAll({ todoId }))}>
-        Remove All
-      </button>
+      <button onClick={checkAllHandler}>Check All</button>
+      <button onClick={unCheckAllHandler}>Uncheck All</button>
+      <button onClick={removeAllCheckedHandler}>Remove All Checked</button>
+      <button onClick={removeAllHandler}>Remove All</button>
     </div>
   );
 };

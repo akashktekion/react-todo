@@ -1,7 +1,7 @@
 import { useSelector } from "react-redux";
 
 import s from "./todoItems.module.scss";
-import { getTodoItems } from "../../../../store/reducers/todoSlice";
+import { getTodoItems } from "../../../../store/todoListsApp/reducers/todoSlice";
 import TodoItem from "../../atoms/todoItem";
 
 const TodoItems = ({ todoListId }) => {

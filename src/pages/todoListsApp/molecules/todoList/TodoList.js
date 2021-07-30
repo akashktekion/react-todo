@@ -4,7 +4,7 @@ import { Link, useParams } from "react-router-dom";
 import InputWithSubmit from "../../atoms/inputWithSubmit";
 import TodoItems from "../../molecules/todoItems";
 import TodoActionButtons from "../../atoms/todoActionButtons";
-import { getTodoList } from "../../../../store/reducers/todoSlice";
+import { getTodoList } from "../../../../store/todoListsApp/reducers/todoSlice";
 import useInput from "../hooks/useInput";
 
 const TodoList = () => {

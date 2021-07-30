@@ -1,7 +1,10 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import { addTodoList, addTodoItem } from "../../../../store/reducers/todoSlice";
+import {
+  addTodoList,
+  addTodoItem,
+} from "../../../../store/todoListsApp/reducers/todoSlice";
 
 export default function useInput(todoListId = null) {
   const [input, setInput] = useState("");
