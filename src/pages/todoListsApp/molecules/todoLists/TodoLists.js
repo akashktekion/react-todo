@@ -1,19 +1,15 @@
-import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
-import Input from "../../atoms/inputWithSubmit";
-import { getTodoLists } from "../../../../store/todoListsApp/reducers/todoSlice";
+import InputWithSubmit from "../../atoms/inputWithSubmit";
 import s from "./todoLists.module.scss";
-import useInput from "../hooks/useInput";
+import { getTodoLists } from "../../../../store/todoListsApp/selectors/todoSelectors";
+import * as actions from "../../../../store/todoListsApp/actions/actionTypes";
 
-const TodoLists = () => {
-  const todoLists = useSelector(getTodoLists);
-
-  const [input, setInput, add] = useInput();
-
+const TodoLists = ({ todoLists }) => {
   return (
     <div>
-      <Input input={input} setInput={setInput} add={add} />
+      <InputWithSubmit actionType={actions.ADD_TODO_LIST} />
       <div>
         {todoLists &&
           todoLists.map((todoList) => (
@@ -28,4 +24,9 @@ const TodoLists = () => {
   );
 };
 
-export default TodoLists;
+const mapStateToProps = (state) => {
+  const todoLists = getTodoLists(state);
+  return { todoLists };
+};
+
+export default connect(mapStateToProps)(TodoLists);

@@ -1,31 +1,33 @@
-import { useSelector } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
 
 import InputWithSubmit from "../../atoms/inputWithSubmit";
 import TodoItems from "../../molecules/todoItems";
 import TodoActionButtons from "../../atoms/todoActionButtons";
-import { getTodoList } from "../../../../store/todoListsApp/reducers/todoSlice";
-import useInput from "../hooks/useInput";
+import * as actions from "../../../../store/todoListsApp/actions/actionTypes";
+import { getTodoList } from "../../../../store/todoListsApp/selectors/todoSelectors";
 
-const TodoList = () => {
-  const { id: todoListId } = useParams();
-  const todoList = useSelector((state) => getTodoList(state, { todoListId }));
-
-  const [input, setInput, add] = useInput(todoListId);
-
+const TodoList = ({ todoListId, todoList }) => {
   return (
     <div>
       <h2>{todoList.todoListName}</h2>
       <Link to={"/"}>
         <button className="btn-back">Back</button>
       </Link>
-      <InputWithSubmit input={input} setInput={setInput} add={add} />
-      <TodoItems todoListId={todoList.todoListId} />
-      {todoList.todoItems.length > 0 && (
-        <TodoActionButtons todoListId={todoList.todoListId} />
-      )}
+      <InputWithSubmit
+        actionType={actions.ADD_TODO_ITEM}
+        todoListId={todoListId}
+      />
+      <TodoItems todoListId={todoListId} todoList={todoList} />
+      {todoList.length > 0 && <TodoActionButtons todoListId={todoListId} />}
     </div>
   );
 };
 
-export default TodoList;
+const mapStateToProps = (state, props) => {
+  const { id } = props.match.params;
+  const todoList = getTodoList(state, id);
+  return { todoListId: id, todoList };
+};
+
+export default connect(mapStateToProps)(TodoList);

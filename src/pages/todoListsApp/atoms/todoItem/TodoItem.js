@@ -1,25 +1,17 @@
-import { useDispatch } from "react-redux";
 import classNames from "classnames";
-
-import s from "./todoItem.module.scss";
+import { connect } from "react-redux";
 import {
   removeOne,
   toggleTaskCompleted,
-} from "../../../../store/todoListsApp/reducers/todoSlice";
+} from "../../../../store/todoListsApp/actions/todoActions";
 
-const TodoItem = ({ todoListId, todoItem }) => {
-  const dispatch = useDispatch();
+import s from "./todoItem.module.scss";
 
-  const checkBoxToggleHandler = (e) =>
-    dispatch(
-      toggleTaskCompleted({
-        todoListId,
-        todoItemId: todoItem.todoItemId,
-      })
-    );
+const TodoItem = ({ todoListId, todoItem, removeOne, toggleTaskCompleted }) => {
+  const checkBoxToggleHandler = () =>
+    toggleTaskCompleted(todoListId, todoItem.todoItemId);
 
-  const removeBtnHandler = () =>
-    dispatch(removeOne({ todoListId, todoItemId: todoItem.todoItemId }));
+  const removeBtnHandler = () => removeOne(todoListId, todoItem.todoItemId);
 
   return (
     <div className={s.item} key={todoItem.todoItemId}>
@@ -40,4 +32,11 @@ const TodoItem = ({ todoListId, todoItem }) => {
   );
 };
 
-export default TodoItem;
+const mapDispatchToProps = (dispatch) => ({
+  removeOne: (todoListId, todoItemId) =>
+    dispatch(removeOne(todoListId, todoItemId)),
+  toggleTaskCompleted: (todoListId, todoItemId) =>
+    dispatch(toggleTaskCompleted(todoListId, todoItemId)),
+});
+
+export default connect(null, mapDispatchToProps)(TodoItem);

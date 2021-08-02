@@ -1,24 +1,19 @@
-import { useSelector } from "react-redux";
-
 import s from "./todoItems.module.scss";
-import { getTodoItems } from "../../../../store/todoListsApp/reducers/todoSlice";
 import TodoItem from "../../atoms/todoItem";
 
-const TodoItems = ({ todoListId }) => {
-  const todoItems = useSelector((state) => getTodoItems(state, { todoListId }));
-
+const TodoItems = ({ todoListId, todoList }) => {
   return (
     <div className={s.items}>
-      {todoItems.length > 0 &&
-        todoItems.map((todoItem) => (
+      {todoList.length > 0 &&
+        todoList.map((todoItem) => (
           <TodoItem
             key={todoItem.todoItemId}
-            todoListId={todoListId}
             todoItem={todoItem}
+            todoListId={todoListId}
           />
         ))}
 
-      {todoItems.length === 0 && <p>No Tasks Yet!</p>}
+      {todoList.length === 0 && <p>No Tasks Yet!</p>}
     </div>
   );
 };

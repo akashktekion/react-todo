@@ -1,21 +1,23 @@
-import { useDispatch } from "react-redux";
-
+import { connect } from "react-redux";
 import s from "./todoActionButtons.module.scss";
 import {
+  checkAll,
+  uncheckAll,
+  removeAllChecked,
+  removeAll,
+} from "../../../../store/todoListsApp/actions/todoActions";
+
+const TodoActionButtons = ({
+  todoListId,
   checkAll,
   unCheckAll,
   removeAllChecked,
   removeAll,
-} from "../../../../store/todoListsApp/reducers/todoSlice";
-
-const TodoActionButtons = ({ todoListId }) => {
-  const dispatch = useDispatch();
-
-  const checkAllHandler = () => dispatch(checkAll({ todoListId }));
-  const unCheckAllHandler = () => dispatch(unCheckAll({ todoListId }));
-  const removeAllCheckedHandler = () =>
-    dispatch(removeAllChecked({ todoListId }));
-  const removeAllHandler = () => dispatch(removeAll({ todoListId }));
+}) => {
+  const checkAllHandler = () => checkAll(todoListId);
+  const unCheckAllHandler = () => unCheckAll(todoListId);
+  const removeAllCheckedHandler = () => removeAllChecked(todoListId);
+  const removeAllHandler = () => removeAll(todoListId);
 
   return (
     <div className={s.actions}>
@@ -27,4 +29,11 @@ const TodoActionButtons = ({ todoListId }) => {
   );
 };
 
-export default TodoActionButtons;
+const mapDispatchToProps = (dispatch) => ({
+  checkAll: (todoListId) => dispatch(checkAll(todoListId)),
+  unCheckAll: (todoListId) => dispatch(uncheckAll(todoListId)),
+  removeAllChecked: (todoListId) => dispatch(removeAllChecked(todoListId)),
+  removeAll: (todoListId) => dispatch(removeAll(todoListId)),
+});
+
+export default connect(null, mapDispatchToProps)(TodoActionButtons);
