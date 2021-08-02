@@ -1,3 +1,4 @@
+import { useCallback } from "react";
 import { connect } from "react-redux";
 import s from "./todoActionButtons.module.scss";
 import {
@@ -14,10 +15,22 @@ const TodoActionButtons = ({
   removeAllChecked,
   removeAll,
 }) => {
-  const checkAllHandler = () => checkAll(todoListId);
-  const unCheckAllHandler = () => unCheckAll(todoListId);
-  const removeAllCheckedHandler = () => removeAllChecked(todoListId);
-  const removeAllHandler = () => removeAll(todoListId);
+  const checkAllHandler = useCallback(
+    () => checkAll(todoListId),
+    [checkAll, todoListId]
+  );
+  const unCheckAllHandler = useCallback(
+    () => unCheckAll(todoListId),
+    [unCheckAll, todoListId]
+  );
+  const removeAllCheckedHandler = useCallback(
+    () => removeAllChecked(todoListId),
+    [removeAllChecked, todoListId]
+  );
+  const removeAllHandler = useCallback(
+    () => removeAll(todoListId),
+    [removeAll, todoListId]
+  );
 
   return (
     <div className={s.actions}>

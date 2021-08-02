@@ -1,5 +1,6 @@
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
+import { useCallback } from "react";
 
 import InputWithSubmit from "../../atoms/inputWithSubmit";
 import s from "./todoLists.module.scss";
@@ -9,9 +10,12 @@ import * as actions from "../../../../store/todoListsApp/actions/actionTypes";
 const TodoLists = ({ todoLists }) => {
   const history = useHistory();
 
-  const goToTodoList = (id) => {
-    history.push(`/todo/${id}`);
-  };
+  const goToTodoList = useCallback(
+    (id) => {
+      history.push(`/todo/${id}`);
+    },
+    [history]
+  );
 
   return (
     <div>

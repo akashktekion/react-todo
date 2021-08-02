@@ -98,7 +98,7 @@ export default function todoReducers(state = initialState, action) {
     }
     case actions.REMOVE_ALL: {
       const todoItems = { ...state.todoItems };
-      delete todoItems[action.payload.todoItemId];
+      delete todoItems[action.payload.todoListId];
       return { ...state, todoItems: JSON.parse(JSON.stringify(todoItems)) };
     }
     case actions.REMOVE_ONE: {
