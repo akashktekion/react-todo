@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 
 import InputWithSubmit from "../../atoms/inputWithSubmit";
@@ -8,12 +8,16 @@ import * as actions from "../../../../store/todoListsApp/actions/actionTypes";
 import { getTodoList } from "../../../../store/todoListsApp/selectors/todoSelectors";
 
 const TodoList = ({ todoListId, todoList }) => {
+  const history = useHistory();
+  const goBack = () => {
+    history.push("/");
+  };
   return (
     <div>
       <h2>{todoList.todoListName}</h2>
-      <Link to={"/"}>
-        <button className="btn-back">Back</button>
-      </Link>
+      <button className="btn-back" onClick={goBack}>
+        Back
+      </button>
       <InputWithSubmit
         actionType={actions.ADD_TODO_ITEM}
         todoListId={todoListId}
