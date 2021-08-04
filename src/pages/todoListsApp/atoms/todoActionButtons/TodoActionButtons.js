@@ -34,10 +34,12 @@ const TodoActionButtons = ({
 
   return (
     <div className={s.actions}>
-      <button onClick={checkAllHandler}>Check All</button>
-      <button onClick={unCheckAllHandler}>Uncheck All</button>
-      <button onClick={removeAllCheckedHandler}>Remove All Checked</button>
-      <button onClick={removeAllHandler}>Remove All</button>
+      <button onClick={checkAllHandler}>&#9745; Check All</button>
+      <button onClick={unCheckAllHandler}>&#9744; Uncheck All</button>
+      <button onClick={removeAllCheckedHandler}>
+        &#9746; Remove All Checked
+      </button>
+      <button onClick={removeAllHandler}>&#9747; Remove All</button>
     </div>
   );
 };

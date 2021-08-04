@@ -52,7 +52,7 @@ const TodoItem = ({
       >
         {todoItem.todoItemName}
       </span>
-      <button onClick={removeBtnHandler}>Remove</button>
+      <button onClick={removeBtnHandler}>&#9747; Remove</button>
     </div>
   );
 };

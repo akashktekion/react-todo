@@ -51,17 +51,17 @@ const TodoList = ({
     <div>
       <h2>{name}</h2>
       <div className={s.historyButtons}>
-        {Object.keys(prevTodoList).length > 0 > 0 && (
-          <button className="btn-prev" onClick={goPrev}>
-            Prev
-          </button>
-        )}
         <button className="btn-back" onClick={goBack}>
-          Back
+          &#8634; Back
         </button>
         {Object.keys(nextTodoList).length > 0 && (
           <button className="btn-next" onClick={goNext}>
-            Next
+            &#8649; Next
+          </button>
+        )}
+        {Object.keys(prevTodoList).length > 0 > 0 && (
+          <button className="btn-prev" onClick={goPrev}>
+            &#8647; Prev
           </button>
         )}
       </div>

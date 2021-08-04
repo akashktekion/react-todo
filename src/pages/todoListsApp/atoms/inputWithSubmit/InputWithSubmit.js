@@ -43,7 +43,7 @@ const InputWithSubmit = ({
         onKeyDown={submitHandler}
       />
       <button id="addNew" className={s.addNew} onClick={submitHandler}>
-        {actionType === "updateTodoItem" ? "Update This" : "Add New"}
+        &#43; {actionType === "updateTodoItem" ? "Update This" : "Add New"}
       </button>
       {actionType === "updateTodoItem" && (
         <button id="cancelBtn" onClick={cancelHandler}>
