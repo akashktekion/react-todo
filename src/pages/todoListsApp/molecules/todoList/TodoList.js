@@ -9,6 +9,7 @@ import * as actions from "../../../../store/todoListsApp/actions/actionTypes";
 import {
   getEditingItemId,
   getTodoList,
+  getTodoListByFilter,
   getTodoListById,
 } from "../../../../store/todoListsApp/selectors/todoSelectors";
 import useTitle from "../hooks/useTitle";
@@ -17,6 +18,8 @@ import s from "./todoList.module.scss";
 
 const TodoList = ({
   todoList,
+  completedList,
+  pendingList,
   nextTodoList,
   prevTodoList,
   editingItemId,
@@ -69,7 +72,8 @@ const TodoList = ({
         todoListId={id}
         todoItemId={editingItemId}
       />
-      <TodoItems todoListId={id} todoList={todoList} />
+      <TodoItems todoListId={id} todoList={pendingList} type={"Pending"} />
+      <TodoItems todoListId={id} todoList={completedList} type={"Completed"} />
       {todoList.length > 0 && <TodoActionButtons todoListId={id} />}
     </div>
   );
@@ -78,12 +82,16 @@ const TodoList = ({
 const mapStateToProps = (state, props) => {
   const { id } = props.match.params;
   const todoList = getTodoList(state, id);
+  const completedList = getTodoListByFilter(state, id, "isCompleted", true);
+  const pendingList = getTodoListByFilter(state, id, "isCompleted", false);
   const nextTodoList = getTodoListById(state, "" + (Number(id) + 1));
   const prevTodoList = getTodoListById(state, "" + (Number(id) - 1));
   const editingItemId = getEditingItemId(state);
   return {
     todoListId: id,
     todoList,
+    completedList,
+    pendingList,
     nextTodoList,
     prevTodoList,
     editingItemId,

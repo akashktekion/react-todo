@@ -1,3 +1,20 @@
 .items {
-  margin: 20px 0;
+  margin: 10px 0;
+  padding: 10px;
+  user-select: none;
+  .typeText {
+    margin: 0;
+    padding: 10px;
+    background-color: #eeeeee;
+    border-bottom: 1px solid white;
+    cursor: pointer;
+  }
+  .itemList {
+    background-color: #eeeeee;
+    padding: 10px;
+    display: block;
+    &.collapsed {
+      display: none;
+    }
+  }
 }

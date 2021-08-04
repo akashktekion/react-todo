@@ -6,6 +6,10 @@ export const getTodoListById = (store, todoListId) =>
   store.todoLists.todoLists[todoListId] || {};
 export const getTodoList = (store, todoListId) =>
   Object.values(store.todoLists.todoItems[todoListId] || []);
+export const getTodoListByFilter = (store, todoListId, filter, filterValue) => {
+  const items = Object.values(store.todoLists.todoItems[todoListId] || []);
+  return items.filter((item) => item[filter] === filterValue);
+};
 export const getInputText = (store) => store.todoLists.input || "";
 export const getEditingItemId = (store) => store.todoLists.editingItemId || "";
 
