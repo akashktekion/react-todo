@@ -7,6 +7,9 @@ import {
   REMOVE_ONE,
   TOGGLE_TASK_COMPLETED,
   UNCHECK_ALL,
+  UPDATE_TODO_ITEM,
+  SET_INPUT_TEXT,
+  SET_EDTING_ITEM_ID,
 } from "./actionTypes";
 
 export const addTodoList = (input) => ({
@@ -47,4 +50,19 @@ export const removeAllChecked = (todoListId) => ({
 export const removeAll = (todoListId) => ({
   type: REMOVE_ALL,
   payload: { todoListId },
+});
+
+export const updateTodoItem = (input, todoListId, todoItemId) => ({
+  type: UPDATE_TODO_ITEM,
+  payload: { input, todoListId, todoItemId },
+});
+
+export const setInputText = (input) => ({
+  type: SET_INPUT_TEXT,
+  payload: { input },
+});
+
+export const setEditingItemId = (todoItemId) => ({
+  type: SET_EDTING_ITEM_ID,
+  payload: { todoItemId },
 });

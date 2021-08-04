@@ -5,11 +5,20 @@ import { connect } from "react-redux";
 import {
   removeOne,
   toggleTaskCompleted,
+  setInputText,
+  setEditingItemId,
 } from "../../../../store/todoListsApp/actions/todoActions";
 
 import s from "./todoItem.module.scss";
 
-const TodoItem = ({ todoListId, todoItem, removeOne, toggleTaskCompleted }) => {
+const TodoItem = ({
+  todoListId,
+  todoItem,
+  removeOne,
+  toggleTaskCompleted,
+  setInputText,
+  setEditingItemId,
+}) => {
   const checkBoxToggleHandler = useCallback(
     () => toggleTaskCompleted(todoListId, todoItem.todoItemId),
     [todoListId, todoItem.todoItemId, toggleTaskCompleted]
@@ -18,6 +27,14 @@ const TodoItem = ({ todoListId, todoItem, removeOne, toggleTaskCompleted }) => {
   const removeBtnHandler = useCallback(
     () => removeOne(todoListId, todoItem.todoItemId),
     [todoListId, todoItem.todoItemId, removeOne]
+  );
+
+  const editTodoHandler = useCallback(
+    (e) => {
+      setInputText(todoItem.todoItemName);
+      setEditingItemId(todoItem.todoItemId);
+    },
+    [todoItem.todoItemName, setInputText, setEditingItemId, todoItem.todoItemId]
   );
 
   return (
@@ -31,6 +48,7 @@ const TodoItem = ({ todoListId, todoItem, removeOne, toggleTaskCompleted }) => {
         className={classNames(s.itemName, {
           [s.striked]: todoItem.isCompleted,
         })}
+        onClick={editTodoHandler}
       >
         {todoItem.todoItemName}
       </span>
@@ -44,6 +62,8 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(removeOne(todoListId, todoItemId)),
   toggleTaskCompleted: (todoListId, todoItemId) =>
     dispatch(toggleTaskCompleted(todoListId, todoItemId)),
+  setInputText: (input) => dispatch(setInputText(input)),
+  setEditingItemId: (todoItemId) => dispatch(setEditingItemId(todoItemId)),
 });
 
 export default connect(null, mapDispatchToProps)(TodoItem);

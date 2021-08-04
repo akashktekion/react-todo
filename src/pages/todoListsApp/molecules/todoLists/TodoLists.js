@@ -6,16 +6,19 @@ import InputWithSubmit from "../../atoms/inputWithSubmit";
 import s from "./todoLists.module.scss";
 import { getTodoLists } from "../../../../store/todoListsApp/selectors/todoSelectors";
 import * as actions from "../../../../store/todoListsApp/actions/actionTypes";
+import useTitle from "../hooks/useTitle";
 
 const TodoLists = ({ todoLists }) => {
   const history = useHistory();
 
   const goToTodoList = useCallback(
-    (id) => {
-      history.push(`/todo/${id}`);
+    (id, name) => {
+      history.push(`/todo/${id}/${name}`);
     },
     [history]
   );
+
+  useTitle(`TodoLists | React`);
 
   return (
     <div>
@@ -24,7 +27,11 @@ const TodoLists = ({ todoLists }) => {
         {todoLists &&
           todoLists.map((todoList) => (
             <div
-              onClick={goToTodoList.bind(this, todoList.todoListId)}
+              onClick={goToTodoList.bind(
+                this,
+                todoList.todoListId,
+                todoList.todoListName
+              )}
               key={todoList.todoListId}
               className={s.todoListCard}
             >

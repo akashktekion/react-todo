@@ -1,4 +1,4 @@
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { connect } from "react-redux";
 import { useCallback } from "react";
 
@@ -6,27 +6,71 @@ import InputWithSubmit from "../../atoms/inputWithSubmit";
 import TodoItems from "../../molecules/todoItems";
 import TodoActionButtons from "../../atoms/todoActionButtons";
 import * as actions from "../../../../store/todoListsApp/actions/actionTypes";
-import { getTodoList } from "../../../../store/todoListsApp/selectors/todoSelectors";
+import {
+  getEditingItemId,
+  getTodoList,
+  getTodoListById,
+} from "../../../../store/todoListsApp/selectors/todoSelectors";
+import useTitle from "../hooks/useTitle";
+import { setEditingItemId } from "../../../../store/todoListsApp/actions/todoActions";
+import s from "./todoList.module.scss";
 
-const TodoList = ({ todoListId, todoList }) => {
+const TodoList = ({
+  todoList,
+  nextTodoList,
+  prevTodoList,
+  editingItemId,
+  setEditingItemId,
+}) => {
+  const { id, name } = useParams();
   const history = useHistory();
+
+  const goPrev = useCallback(() => {
+    const { todoListId: id, todoListName: name } = prevTodoList;
+    history.push(`/todo/${id}/${name}`);
+    setEditingItemId("");
+  }, [history, prevTodoList, setEditingItemId]);
 
   const goBack = useCallback(() => {
     history.push("/");
-  }, [history]);
+    setEditingItemId("");
+  }, [history, setEditingItemId]);
+
+  const goNext = useCallback(() => {
+    const { todoListId: id, todoListName: name } = nextTodoList;
+    history.push(`/todo/${id}/${name}`);
+    setEditingItemId("");
+  }, [history, nextTodoList, setEditingItemId]);
+
+  useTitle(`${name} | TodoLists | React`);
 
   return (
     <div>
-      <h2>{todoList.todoListName}</h2>
-      <button className="btn-back" onClick={goBack}>
-        Back
-      </button>
+      <h2>{name}</h2>
+      <div className={s.historyButtons}>
+        {Object.keys(prevTodoList).length > 0 > 0 && (
+          <button className="btn-prev" onClick={goPrev}>
+            Prev
+          </button>
+        )}
+        <button className="btn-back" onClick={goBack}>
+          Back
+        </button>
+        {Object.keys(nextTodoList).length > 0 && (
+          <button className="btn-next" onClick={goNext}>
+            Next
+          </button>
+        )}
+      </div>
       <InputWithSubmit
-        actionType={actions.ADD_TODO_ITEM}
-        todoListId={todoListId}
+        actionType={
+          editingItemId ? actions.UPDATE_TODO_ITEM : actions.ADD_TODO_ITEM
+        }
+        todoListId={id}
+        todoItemId={editingItemId}
       />
-      <TodoItems todoListId={todoListId} todoList={todoList} />
-      {todoList.length > 0 && <TodoActionButtons todoListId={todoListId} />}
+      <TodoItems todoListId={id} todoList={todoList} />
+      {todoList.length > 0 && <TodoActionButtons todoListId={id} />}
     </div>
   );
 };
@@ -34,7 +78,20 @@ const TodoList = ({ todoListId, todoList }) => {
 const mapStateToProps = (state, props) => {
   const { id } = props.match.params;
   const todoList = getTodoList(state, id);
-  return { todoListId: id, todoList };
+  const nextTodoList = getTodoListById(state, "" + (Number(id) + 1));
+  const prevTodoList = getTodoListById(state, "" + (Number(id) - 1));
+  const editingItemId = getEditingItemId(state);
+  return {
+    todoListId: id,
+    todoList,
+    nextTodoList,
+    prevTodoList,
+    editingItemId,
+  };
 };
 
-export default connect(mapStateToProps)(TodoList);
+const mapDispatchToProps = (dispatch) => ({
+  setEditingItemId: (todoItemId) => dispatch(setEditingItemId(todoItemId)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(TodoList);

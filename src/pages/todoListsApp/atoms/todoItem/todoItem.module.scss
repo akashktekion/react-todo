@@ -1,10 +1,15 @@
 .item {
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   .itemName {
-    margin-left: 5px;
-    margin-right: 20px;
+    margin: 10px 20px;
+    padding: 2px 8px;
+    border: 1px solid #cccccc;
+    cursor: pointer;
     &.striked {
       text-decoration: line-through;
     }
+  }
+  &.disabled {
+    cursor: not-allowed;
   }
 }

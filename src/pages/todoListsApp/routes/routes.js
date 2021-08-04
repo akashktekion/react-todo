@@ -7,7 +7,7 @@ const Routes = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/todo/:id" component={TodoList} />
+        <Route path="/todo/:id/:name" component={TodoList} />
         <Route path="/" component={TodoLists} />
       </Switch>
     </Router>
