@@ -4,12 +4,19 @@ import { useCallback } from "react";
 import PropTypes from "prop-types";
 
 import InputWithSubmit from "../../atoms/inputWithSubmit";
-import { getTodoLists } from "../../../../store/todoListsApp/selectors/todoSelectors";
+import {
+  getInputText,
+  getTodoLists,
+} from "../../../../store/todoListsApp/selectors/todoSelectors";
 import * as actions from "../../../../store/todoListsApp/actions/actionTypes";
 import useTitle from "../hooks/useTitle";
 import TodoListsItem from "../../atoms/todoListsItem/TodoListsItem";
+import {
+  addTodoList,
+  setInputText,
+} from "../../../../store/todoListsApp/actions/createTodoActions";
 
-const TodoLists = ({ todoLists }) => {
+const TodoLists = ({ todoLists, input, setInputText, addTodoList }) => {
   const history = useHistory();
 
   const goToTodoList = useCallback(
@@ -21,9 +28,19 @@ const TodoLists = ({ todoLists }) => {
 
   useTitle(`TodoLists | React`);
 
+  const submitHandler = (e) => {
+    if (input && e.key === "Enter") {
+      addTodoList(input);
+      setInputText("");
+    }
+  };
+
   return (
     <div>
-      <InputWithSubmit actionType={actions.ADD_TODO_LIST} />
+      <InputWithSubmit
+        submitHandler={submitHandler}
+        actionType={actions.ADD_TODO_LIST}
+      />
       <div>
         {todoLists &&
           todoLists.map((todoList) => (
@@ -41,12 +58,21 @@ const TodoLists = ({ todoLists }) => {
 };
 
 TodoLists.propTypes = {
+  input: PropTypes.string,
   todoLists: PropTypes.array,
+  setInputText: PropTypes.func,
+  addTodoList: PropTypes.func,
 };
+
+const mapDispatchToProps = (dispatch) => ({
+  setInputText: (input) => dispatch(setInputText(input)),
+  addTodoList: (input) => dispatch(addTodoList(input)),
+});
 
 const mapStateToProps = (state) => {
   const todoLists = getTodoLists(state);
-  return { todoLists };
+  const input = getInputText(state);
+  return { todoLists, input };
 };
 
-export default connect(mapStateToProps)(TodoLists);
+export default connect(mapStateToProps, mapDispatchToProps)(TodoLists);

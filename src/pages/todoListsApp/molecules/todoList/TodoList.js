@@ -1,4 +1,4 @@
-import { useHistory, useParams } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
 import { useCallback } from "react";
 import PropTypes from "prop-types";
@@ -13,30 +13,40 @@ import {
   getTodoListById,
   getTodoListsById,
   getFilteredTodoListById,
+  getInputText,
 } from "../../../../store/todoListsApp/selectors/todoSelectors";
 import useTitle from "../hooks/useTitle";
-import { setEditingItemId } from "../../../../store/todoListsApp/actions/createTodoActions";
+import {
+  addTodoItem,
+  setEditingItemId,
+  setInputText,
+  updateTodoItem,
+} from "../../../../store/todoListsApp/actions/createTodoActions";
 import TodoLists from "../todoLists";
 
 const TodoList = ({
+  todoListId,
   todoList,
+  input,
   completedList,
   pendingList,
   currentTodoList,
   nextTodoList,
   prevTodoList,
   editingItemId,
+  setInputText,
+  addTodoItem,
+  updateTodoItem,
   setEditingItemId,
 }) => {
-  const { id } = useParams();
   const history = useHistory();
 
   const isPrevPresent = Object.keys(prevTodoList).length > 0;
   const isNextPresent = Object.keys(nextTodoList).length > 0;
 
   const goPrev = useCallback(() => {
-    const { todoListId: id } = prevTodoList;
-    history.push(`/todo/${id}`);
+    const { todoListId: prevId } = prevTodoList;
+    history.push(`/todo/${prevId}`);
     setEditingItemId("");
   }, [history, prevTodoList, setEditingItemId]);
 
@@ -46,12 +56,22 @@ const TodoList = ({
   }, [history, setEditingItemId]);
 
   const goNext = useCallback(() => {
-    const { todoListId: id } = nextTodoList;
-    history.push(`/todo/${id}`);
+    const { todoListId: nextId } = nextTodoList;
+    history.push(`/todo/${nextId}`);
     setEditingItemId("");
   }, [history, nextTodoList, setEditingItemId]);
 
   useTitle(`${currentTodoList.todoListName} | TodoLists | React`);
+  const submitHandler = (e) => {
+    if (input && (e.key === "Enter" || e.target.id === "addNew")) {
+      if (editingItemId) {
+        updateTodoItem(input, todoListId, editingItemId);
+      } else {
+        addTodoItem(input, todoListId);
+      }
+      setInputText("");
+    }
+  };
 
   return (
     <div>
@@ -64,21 +84,24 @@ const TodoList = ({
         isPrevPresent={isPrevPresent}
       />
       <InputWithSubmit
+        submitHandler={submitHandler}
         actionType={
           editingItemId ? actions.UPDATE_TODO_ITEM : actions.ADD_TODO_ITEM
         }
-        todoListId={id}
-        todoItemId={editingItemId}
       />
       {todoList.length > 0 && (
         <div>
-          <TodoItems todoListId={id} todoList={pendingList} type={"Pending"} />
           <TodoItems
-            todoListId={id}
+            todoListId={todoListId}
+            todoList={pendingList}
+            type={"Pending"}
+          />
+          <TodoItems
+            todoListId={todoListId}
             todoList={completedList}
             type={"Completed"}
           />
-          <TodoActionButtons todoListId={id} />
+          <TodoActionButtons todoListId={todoListId} />
         </div>
       )}
       {todoList.length === 0 && <p>No Tasks Yet!</p>}
@@ -88,6 +111,7 @@ const TodoList = ({
 
 TodoLists.propTypes = {
   todoList: PropTypes.array,
+  imput: PropTypes.string,
   completedList: PropTypes.array,
   pendingList: PropTypes.array,
   currentTodoList: PropTypes.array,
@@ -99,6 +123,7 @@ TodoLists.propTypes = {
 
 const mapStateToProps = (state, props) => {
   const { id } = props.match.params;
+  const input = getInputText(state);
   const todoList = getTodoListById(state, id);
   const currentTodoList = getTodoListsById(state, "" + Number(id));
   const nextTodoList = getTodoListsById(state, "" + (Number(id) + 1));
@@ -108,6 +133,7 @@ const mapStateToProps = (state, props) => {
   const editingItemId = getEditingItemId(state);
   return {
     todoListId: id,
+    input,
     todoList,
     completedList,
     pendingList,
@@ -119,6 +145,10 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
+  setInputText: (input) => dispatch(setInputText(input)),
+  addTodoItem: (input, todoListId) => dispatch(addTodoItem(input, todoListId)),
+  updateTodoItem: (input, todoListId, todoItemId) =>
+    dispatch(updateTodoItem(input, todoListId, todoItemId)),
   setEditingItemId: (todoItemId) => dispatch(setEditingItemId(todoItemId)),
 });
 

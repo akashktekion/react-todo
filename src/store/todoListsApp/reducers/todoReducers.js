@@ -94,7 +94,7 @@ export default produce((draft, action) => {
     }
     case actions.UPDATE_TODO_ITEM: {
       const todoItem =
-        draft.todoListsMap[action.payload.todoListId][
+        draft.todoListsMap[action.payload.todoListId].todoItemsMap[
           action.payload.todoItemId
         ];
       todoItem.todoItemName = action.payload.input;
