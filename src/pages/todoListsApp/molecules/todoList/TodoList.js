@@ -74,12 +74,16 @@ const TodoList = ({
 };
 
 TodoLists.propTypes = {
-  todoList: PropTypes.array,
-  imput: PropTypes.string,
-  completedList: PropTypes.array,
-  pendingList: PropTypes.array,
-  currentTodoList: PropTypes.array,
-  editingItemId: PropTypes.string,
+  todoListId: PropTypes.string,
+  todoList: PropTypes.object,
+  input: PropTypes.string,
+  completedList: PropTypes.object,
+  pendingList: PropTypes.object,
+  currentTodoList: PropTypes.object,
+  editingItemId: PropTypes.object,
+  setInputText: PropTypes.func,
+  addTodoItem: PropTypes.func,
+  updateTodoItem: PropTypes.func,
 };
 
 const mapStateToProps = (state, props) => {
