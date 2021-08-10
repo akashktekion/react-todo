@@ -3,7 +3,7 @@ export const loadState = () => {
     let serializedState = localStorage.getItem("state");
     if (!serializedState) {
       serializedState =
-        '{"todoLists":{ "todoLists": {}, "todoItems": {}, "input": "", "editingItemId": "", "nextId": "1" }}';
+        '{"todoListsApp":{ "todoListsMap": {}, "input": "", "editingItemId": "", "nextId": "1" }}';
       localStorage.setItem("state", serializedState);
     }
     return JSON.parse(serializedState);

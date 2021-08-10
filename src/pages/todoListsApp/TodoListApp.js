@@ -1,17 +1,17 @@
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 
-import TodoLists from "../molecules/todoLists";
-import TodoList from "../molecules/todoList";
+import TodoLists from "./molecules/todoLists";
+import TodoList from "./molecules/todoList";
 
-const Routes = () => {
+const TodoListApp = () => {
   return (
     <Router>
       <Switch>
-        <Route path="/todo/:id/:name" component={TodoList} />
+        <Route path="/todo/:id" component={TodoList} />
         <Route path="/" component={TodoLists} />
       </Switch>
     </Router>
   );
 };
 
-export default Routes;
+export default TodoListApp;

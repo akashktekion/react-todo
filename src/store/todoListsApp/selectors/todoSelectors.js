@@ -1,19 +1,27 @@
 // import { createSelector } from "reselect";
 
 export const getTodoLists = (store) =>
-  Object.values(store.todoLists.todoLists || []);
-export const getTodoListById = (store, todoListId) =>
-  store.todoLists.todoLists[todoListId] || {};
-export const getTodoList = (store, todoListId) =>
-  Object.values(store.todoLists.todoItems[todoListId] || []);
-export const getTodoListByFilter = (store, todoListId, filter, filterValue) => {
-  const items = Object.values(store.todoLists.todoItems[todoListId] || []);
-  return items.filter((item) => item[filter] === filterValue);
+  Object.values(store.todoListsApp.todoListsMap || []);
+export const getTodoListsById = (store, todoListId) =>
+  store.todoListsApp.todoListsMap[todoListId] || {};
+export const getTodoListById = (store, todoListId) => {
+  let todoList = [];
+  if (todoListId in store.todoListsApp.todoListsMap) {
+    todoList = Object.values(
+      store.todoListsApp.todoListsMap[todoListId].todoItemsMap
+    );
+  }
+  return todoList;
 };
-export const getInputText = (store) => store.todoLists.input || "";
-export const getEditingItemId = (store) => store.todoLists.editingItemId || "";
-
-// export const getTodoItems = (store, todoListId) =>
-//   store.todoLists.todoLists.filter(
-//     (todoList) => todoList.todoListId === todoListId
-//   )[0].todoItems;
+export const getFilteredTodoListById = (
+  store,
+  todoListId,
+  filter,
+  filterValue
+) => {
+  let todoList = getTodoListById(store, todoListId);
+  return todoList.filter((item) => item[filter] === filterValue);
+};
+export const getInputText = (store) => store.todoListsApp.input || "";
+export const getEditingItemId = (store) =>
+  store.todoListsApp.editingItemId || "";

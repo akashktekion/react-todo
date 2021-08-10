@@ -1,12 +1,14 @@
 import { useCallback } from "react";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
+
 import s from "./todoActionButtons.module.scss";
 import {
   checkAll,
   uncheckAll,
   removeAllChecked,
   removeAll,
-} from "../../../../store/todoListsApp/actions/todoActions";
+} from "../../../../store/todoListsApp/actions/createTodoActions";
 
 const TodoActionButtons = ({
   todoListId,
@@ -42,6 +44,14 @@ const TodoActionButtons = ({
       <button onClick={removeAllHandler}>&#9747; Remove All</button>
     </div>
   );
+};
+
+TodoActionButtons.propTypes = {
+  todoListId: PropTypes.string.isRequired,
+  checkAll: PropTypes.func.isRequired,
+  unCheckAll: PropTypes.func.isRequired,
+  removeAllChecked: PropTypes.func.isRequired,
+  removeAll: PropTypes.func.isRequired,
 };
 
 const mapDispatchToProps = (dispatch) => ({

@@ -8,7 +8,7 @@ const store = createStore(rootReducers, persistedState, applyMiddleware(thunk));
 // const store = createStore(rootReducers, persistedState);
 store.subscribe(() => {
   saveState({
-    todoLists: store.getState().todoLists,
+    todoListsApp: store.getState().todoListsApp,
   });
 });
 

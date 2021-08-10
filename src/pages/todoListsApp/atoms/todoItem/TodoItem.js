@@ -1,20 +1,20 @@
 import { useCallback } from "react";
 import classNames from "classnames";
 import { connect } from "react-redux";
+import PropTypes from "prop-types";
 
 import {
-  removeOne,
+  removeTodo,
   toggleTaskCompleted,
   setInputText,
   setEditingItemId,
-} from "../../../../store/todoListsApp/actions/todoActions";
-
+} from "../../../../store/todoListsApp/actions/createTodoActions";
 import s from "./todoItem.module.scss";
 
 const TodoItem = ({
   todoListId,
   todoItem,
-  removeOne,
+  removeTodo,
   toggleTaskCompleted,
   setInputText,
   setEditingItemId,
@@ -25,8 +25,8 @@ const TodoItem = ({
   );
 
   const removeBtnHandler = useCallback(
-    () => removeOne(todoListId, todoItem.todoItemId),
-    [todoListId, todoItem.todoItemId, removeOne]
+    () => removeTodo(todoListId, todoItem.todoItemId),
+    [todoListId, todoItem.todoItemId, removeTodo]
   );
 
   const editTodoHandler = useCallback(
@@ -38,7 +38,7 @@ const TodoItem = ({
   );
 
   return (
-    <div className={s.item} key={todoItem.todoItemId}>
+    <div className={s.item}>
       <input
         type="checkbox"
         onChange={checkBoxToggleHandler}
@@ -57,9 +57,18 @@ const TodoItem = ({
   );
 };
 
+TodoItem.propTypes = {
+  todoListId: PropTypes.string.isRequired,
+  todoItem: PropTypes.object.isRequired,
+  removeTodo: PropTypes.func.isRequired,
+  toggleTaskCompleted: PropTypes.func.isRequired,
+  setInputText: PropTypes.func.isRequired,
+  setEditingItemId: PropTypes.func.isRequired,
+};
+
 const mapDispatchToProps = (dispatch) => ({
-  removeOne: (todoListId, todoItemId) =>
-    dispatch(removeOne(todoListId, todoItemId)),
+  removeTodo: (todoListId, todoItemId) =>
+    dispatch(removeTodo(todoListId, todoItemId)),
   toggleTaskCompleted: (todoListId, todoItemId) =>
     dispatch(toggleTaskCompleted(todoListId, todoItemId)),
   setInputText: (input) => dispatch(setInputText(input)),

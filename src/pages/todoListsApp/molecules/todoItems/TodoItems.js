@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from "react";
 import classNames from "classnames";
+import PropTypes from "prop-types";
 
 import s from "./todoItems.module.scss";
 import TodoItem from "../../atoms/todoItem";
@@ -34,10 +35,16 @@ const TodoItems = ({ todoListId, todoList, type }) => {
             />
           ))}
 
-        {todoList.length === 0 && <p>No Tasks Yet!</p>}
+        {todoList.length === 0 && <p>No {type} Tasks Yet!</p>}
       </div>
     </div>
   );
+};
+
+TodoItems.propTypes = {
+  todoListId: PropTypes.string.isRequired,
+  todoList: PropTypes.array.isRequired,
+  type: PropTypes.string.isRequired,
 };
 
 export default TodoItems;

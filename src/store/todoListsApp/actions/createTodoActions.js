@@ -22,7 +22,7 @@ export const addTodoItem = (input, todoListId) => ({
   payload: { input, todoListId },
 });
 
-export const removeOne = (todoListId, todoItemId) => ({
+export const removeTodo = (todoListId, todoItemId) => ({
   type: REMOVE_ONE,
   payload: { todoListId, todoItemId },
 });

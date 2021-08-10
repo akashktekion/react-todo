@@ -1,11 +1,11 @@
 import s from "./app.module.scss";
-import Routes from "../../todoListsApp/routes/routes";
+import TodoListApp from "../../todoListsApp";
 
 function App() {
   return (
     <div className={s.app}>
       <h3>My Todos App</h3>
-      <Routes />
+      <TodoListApp />
     </div>
   );
 }

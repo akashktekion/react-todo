@@ -5,24 +5,24 @@ import * as actions from "../actions/actionTypes";
 export default produce((draft, action) => {
   switch (action.type) {
     case actions.ADD_TODO_LIST:
-      draft.todoLists[draft.nextId] = {
-        todoListId: draft.nextId,
+      draft.todoListsMap[draft.nextId] = {
+        todoListId: "" + draft.nextId++,
         todoListName: action.payload.input,
+        todoItemsMap: {},
       };
-      draft.nextId++;
       break;
     case actions.ADD_TODO_ITEM:
-      if (!(action.payload.todoListId in draft.todoItems)) {
-        draft.todoItems[action.payload.todoListId] = {};
-      }
-      draft.todoItems[action.payload.todoListId]["" + Date.now()] = {
+      draft.todoListsMap[action.payload.todoListId].todoItemsMap[
+        "" + Date.now()
+      ] = {
         todoItemId: "" + Date.now(),
         todoItemName: action.payload.input,
         isCompleted: false,
       };
       break;
     case actions.CHECK_ALL: {
-      const todoItems = draft.todoItems[action.payload.todoListId];
+      const todoItems =
+        draft.todoListsMap[action.payload.todoListId].todoItemsMap;
       for (const item in todoItems) {
         if (item in todoItems) {
           todoItems[item].isCompleted = true;
@@ -33,7 +33,8 @@ export default produce((draft, action) => {
       break;
     }
     case actions.UNCHECK_ALL: {
-      const todoItems = draft.todoItems[action.payload.todoListId];
+      const todoItems =
+        draft.todoListsMap[action.payload.todoListId].todoItemsMap;
       for (const item in todoItems) {
         if (item in todoItems) {
           todoItems[item].isCompleted = false;
@@ -44,7 +45,8 @@ export default produce((draft, action) => {
       break;
     }
     case actions.REMOVE_ALL_CHECKED: {
-      const todoItems = draft.todoItems[action.payload.todoListId];
+      const todoItems =
+        draft.todoListsMap[action.payload.todoListId].todoItemsMap;
       for (const item in todoItems) {
         if (item in todoItems) {
           if (todoItems[item].isCompleted) {
@@ -57,26 +59,24 @@ export default produce((draft, action) => {
       break;
     }
     case actions.REMOVE_ALL: {
-      const todoItems = draft.todoItems;
-      delete todoItems[action.payload.todoListId];
+      draft.todoListsMap[action.payload.todoListId].todoItemsMap = {};
       draft.input = "";
       draft.editingItemId = "";
       break;
     }
     case actions.REMOVE_ONE: {
-      const todoItems = draft.todoItems;
-      delete todoItems[action.payload.todoListId][action.payload.todoItemId];
+      const todoItems =
+        draft.todoListsMap[action.payload.todoListId].todoItemsMap;
+      delete todoItems[action.payload.todoItemId];
       draft.input = "";
       draft.editingItemId = "";
       break;
     }
     case actions.TOGGLE_TASK_COMPLETED: {
-      const todoItems = draft.todoItems;
-      todoItems[action.payload.todoListId][
-        action.payload.todoItemId
-      ].isCompleted =
-        !todoItems[action.payload.todoListId][action.payload.todoItemId]
-          .isCompleted;
+      const todoItems =
+        draft.todoListsMap[action.payload.todoListId].todoItemsMap;
+      todoItems[action.payload.todoItemId].isCompleted =
+        !todoItems[action.payload.todoItemId].isCompleted;
       draft.input = "";
       draft.editingItemId = "";
       break;
@@ -94,7 +94,9 @@ export default produce((draft, action) => {
     }
     case actions.UPDATE_TODO_ITEM: {
       const todoItem =
-        draft.todoItems[action.payload.todoListId][action.payload.todoItemId];
+        draft.todoListsMap[action.payload.todoListId][
+          action.payload.todoItemId
+        ];
       todoItem.todoItemName = action.payload.input;
       draft.input = "";
       draft.editingItemId = "";
