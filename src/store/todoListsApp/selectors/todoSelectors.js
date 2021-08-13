@@ -22,6 +22,8 @@ export const getFilteredTodoListById = (
   let todoList = getTodoListById(store, todoListId);
   return todoList.filter((item) => item[filter] === filterValue);
 };
-export const getInputText = (store) => store.todoListsApp.input || "";
 export const getEditingItemId = (store) =>
   store.todoListsApp.editingItemId || "";
+
+export const getLoadingState = (store) => store.todoListsApp.loading;
+export const getErrorState = (store) => store.todoListsApp.error;

@@ -1,6 +1,7 @@
 import { produce } from "immer";
 
 import * as actions from "../actions/actionTypes";
+import { putData } from "../utilities/apiCalls";
 
 export default produce((draft, action) => {
   switch (action.type) {
@@ -10,6 +11,7 @@ export default produce((draft, action) => {
         todoListName: action.payload.input,
         todoItemsMap: {},
       };
+      putData({ todoListsMap: draft.todoListsMap, nextId: draft.nextId });
       break;
     case actions.ADD_TODO_ITEM:
       draft.todoListsMap[action.payload.todoListId].todoItemsMap[
@@ -19,6 +21,7 @@ export default produce((draft, action) => {
         todoItemName: action.payload.input,
         isCompleted: false,
       };
+      putData({ todoListsMap: draft.todoListsMap, nextId: draft.nextId });
       break;
     case actions.CHECK_ALL: {
       const todoItems =
@@ -30,6 +33,7 @@ export default produce((draft, action) => {
       }
       draft.input = "";
       draft.editingItemId = "";
+      putData({ todoListsMap: draft.todoListsMap, nextId: draft.nextId });
       break;
     }
     case actions.UNCHECK_ALL: {
@@ -42,6 +46,7 @@ export default produce((draft, action) => {
       }
       draft.input = "";
       draft.editingItemId = "";
+      putData({ todoListsMap: draft.todoListsMap, nextId: draft.nextId });
       break;
     }
     case actions.REMOVE_ALL_CHECKED: {
@@ -56,12 +61,14 @@ export default produce((draft, action) => {
       }
       draft.input = "";
       draft.editingItemId = "";
+      putData({ todoListsMap: draft.todoListsMap, nextId: draft.nextId });
       break;
     }
     case actions.REMOVE_ALL: {
       draft.todoListsMap[action.payload.todoListId].todoItemsMap = {};
       draft.input = "";
       draft.editingItemId = "";
+      putData({ todoListsMap: draft.todoListsMap, nextId: draft.nextId });
       break;
     }
     case actions.REMOVE_ONE: {
@@ -70,6 +77,7 @@ export default produce((draft, action) => {
       delete todoItems[action.payload.todoItemId];
       draft.input = "";
       draft.editingItemId = "";
+      putData({ todoListsMap: draft.todoListsMap, nextId: draft.nextId });
       break;
     }
     case actions.TOGGLE_TASK_COMPLETED: {
@@ -79,17 +87,7 @@ export default produce((draft, action) => {
         !todoItems[action.payload.todoItemId].isCompleted;
       draft.input = "";
       draft.editingItemId = "";
-      break;
-    }
-    case actions.SET_INPUT_TEXT: {
-      draft.input = action.payload.input;
-      break;
-    }
-    case actions.SET_EDTING_ITEM_ID: {
-      if (!action.payload.todoItemId) {
-        draft.input = "";
-      }
-      draft.editingItemId = action.payload.todoItemId;
+      putData({ todoListsMap: draft.todoListsMap, nextId: draft.nextId });
       break;
     }
     case actions.UPDATE_TODO_ITEM: {
@@ -100,8 +98,29 @@ export default produce((draft, action) => {
       todoItem.todoItemName = action.payload.input;
       draft.input = "";
       draft.editingItemId = "";
+      putData({ todoListsMap: draft.todoListsMap, nextId: draft.nextId });
       break;
     }
+    case actions.SET_EDTING_ITEM_ID: {
+      if (!action.payload.todoItemId) {
+        draft.input = "";
+      }
+      draft.editingItemId = action.payload.todoItemId;
+      break;
+    }
+    case actions.DATA_REQUEST:
+      draft.loading = true;
+      draft.error = "";
+      break;
+    case actions.DATA_SUCCESS:
+      draft.todoListsMap = action.payload.todoListsMap;
+      draft.nextId = action.payload.nextId;
+      draft.loading = false;
+      break;
+    case actions.DATA_ERROR:
+      draft.loading = false;
+      draft.error = action.payload.error;
+      break;
     default:
       return;
   }

@@ -1,5 +1,6 @@
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import { useState } from "react";
 
 import InputWithSubmit from "../../atoms/inputWithSubmit";
 import TodoItems from "../../molecules/todoItems";
@@ -11,12 +12,10 @@ import {
   getTodoListById,
   getTodoListsById,
   getFilteredTodoListById,
-  getInputText,
 } from "../../../../store/todoListsApp/selectors/todoSelectors";
 import useTitle from "../hooks/useTitle";
 import {
   addTodoItem,
-  setInputText,
   updateTodoItem,
 } from "../../../../store/todoListsApp/actions/createTodoActions";
 import TodoLists from "../todoLists";
@@ -24,27 +23,26 @@ import TodoLists from "../todoLists";
 const TodoList = ({
   todoListId,
   todoList,
-  input,
   completedList,
   pendingList,
   currentTodoList,
   editingItemId,
-  setInputText,
   addTodoItem,
   updateTodoItem,
 }) => {
   useTitle(`${currentTodoList.todoListName} | TodoLists | React`);
 
-  const submitHandler = (e) => {
-    if (input && (e.key === "Enter" || e.target.id === "addNew")) {
-      if (editingItemId) {
-        updateTodoItem(input, todoListId, editingItemId);
-      } else {
-        addTodoItem(input, todoListId);
-      }
-      setInputText("");
+  const [editingInputName, setEditingInputName] = useState("");
+
+  const submitHandler = (input) => {
+    if (editingItemId) {
+      updateTodoItem(input, todoListId, editingItemId);
+    } else {
+      addTodoItem(input, todoListId);
     }
   };
+
+  const updateInput = (input) => setEditingInputName(input);
 
   const type = editingItemId ? actions.UPDATE_TODO_ITEM : actions.ADD_TODO_ITEM;
 
@@ -52,18 +50,24 @@ const TodoList = ({
     <div>
       <h2>{currentTodoList.todoListName}</h2>
       <TodoHistoryButtons todoListId={todoListId} />
-      <InputWithSubmit submitHandler={submitHandler} actionType={type} />
+      <InputWithSubmit
+        submitHandler={submitHandler}
+        actionType={type}
+        editingInputName={editingInputName}
+      />
       {todoList.length > 0 && (
         <div>
           <TodoItems
             todoListId={todoListId}
             todoList={pendingList}
             type={"Pending"}
+            updateInput={updateInput}
           />
           <TodoItems
             todoListId={todoListId}
             todoList={completedList}
             type={"Completed"}
+            updateInput={updateInput}
           />
           <TodoActionButtons todoListId={todoListId} />
         </div>
@@ -73,22 +77,30 @@ const TodoList = ({
   );
 };
 
+TodoLists.defaultProps = {
+  todoListId: "",
+  todoList: null,
+  completedList: null,
+  pendingList: null,
+  currentTodoList: null,
+  editingItemId: null,
+  addTodoItem: () => {},
+  updateTodoItem: () => {},
+};
+
 TodoLists.propTypes = {
   todoListId: PropTypes.string,
   todoList: PropTypes.object,
-  input: PropTypes.string,
   completedList: PropTypes.object,
   pendingList: PropTypes.object,
   currentTodoList: PropTypes.object,
   editingItemId: PropTypes.object,
-  setInputText: PropTypes.func,
   addTodoItem: PropTypes.func,
   updateTodoItem: PropTypes.func,
 };
 
 const mapStateToProps = (state, props) => {
   const { id } = props.match.params;
-  const input = getInputText(state);
   const todoList = getTodoListById(state, id);
   const currentTodoList = getTodoListsById(state, "" + Number(id));
   const completedList = getFilteredTodoListById(state, id, "isCompleted", true);
@@ -96,7 +108,6 @@ const mapStateToProps = (state, props) => {
   const editingItemId = getEditingItemId(state);
   return {
     todoListId: id,
-    input,
     todoList,
     completedList,
     pendingList,
@@ -106,7 +117,6 @@ const mapStateToProps = (state, props) => {
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  setInputText: (input) => dispatch(setInputText(input)),
   addTodoItem: (input, todoListId) => dispatch(addTodoItem(input, todoListId)),
   updateTodoItem: (input, todoListId, todoItemId) =>
     dispatch(updateTodoItem(input, todoListId, todoItemId)),

@@ -1,22 +1,23 @@
 import { useHistory } from "react-router-dom";
 import { connect } from "react-redux";
-import { useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 
 import InputWithSubmit from "../../atoms/inputWithSubmit";
 import {
-  getInputText,
   getTodoLists,
+  getLoadingState,
+  getErrorState,
 } from "../../../../store/todoListsApp/selectors/todoSelectors";
 import * as actions from "../../../../store/todoListsApp/actions/actionTypes";
 import useTitle from "../hooks/useTitle";
 import TodoListsItem from "../../atoms/todoListsItem/TodoListsItem";
 import {
   addTodoList,
-  setInputText,
+  fetchData,
 } from "../../../../store/todoListsApp/actions/createTodoActions";
 
-const TodoLists = ({ todoLists, input, setInputText, addTodoList }) => {
+const TodoLists = ({ todoLists, loading, error, addTodoList, fetchData }) => {
   const history = useHistory();
 
   const goToTodoList = useCallback(
@@ -28,12 +29,13 @@ const TodoLists = ({ todoLists, input, setInputText, addTodoList }) => {
 
   useTitle(`TodoLists | React`);
 
-  const submitHandler = (e) => {
-    if (input && e.key === "Enter") {
-      addTodoList(input);
-      setInputText("");
-    }
+  const submitHandler = (input) => {
+    addTodoList(input);
   };
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   return (
     <div>
@@ -42,7 +44,10 @@ const TodoLists = ({ todoLists, input, setInputText, addTodoList }) => {
         actionType={actions.ADD_TODO_LIST}
       />
       <div>
-        {todoLists &&
+        {loading && <p>Loading...</p>}
+
+        {!loading &&
+          todoLists &&
           todoLists.map((todoList) => (
             <TodoListsItem
               key={todoList.todoListId}
@@ -51,28 +56,39 @@ const TodoLists = ({ todoLists, input, setInputText, addTodoList }) => {
             />
           ))}
 
-        {todoLists.length === 0 && <p>No TODOS Yet!</p>}
+        {!loading && !error && todoLists.length === 0 && <p>No TODOS Yet!</p>}
+        {!loading && error && <p>Something Went Wrong!</p>}
       </div>
     </div>
   );
 };
 
+TodoLists.defaultProps = {
+  todoLists: [],
+  loading: false,
+  error: "",
+  addTodoList: () => {},
+  fetchData: () => {},
+};
+
 TodoLists.propTypes = {
-  input: PropTypes.string,
   todoLists: PropTypes.array,
-  setInputText: PropTypes.func,
+  loading: PropTypes.bool,
+  error: PropTypes.string,
   addTodoList: PropTypes.func,
+  fetchData: PropTypes.func,
 };
 
 const mapDispatchToProps = (dispatch) => ({
-  setInputText: (input) => dispatch(setInputText(input)),
   addTodoList: (input) => dispatch(addTodoList(input)),
+  fetchData: () => dispatch(fetchData()),
 });
 
 const mapStateToProps = (state) => {
   const todoLists = getTodoLists(state);
-  const input = getInputText(state);
-  return { todoLists, input };
+  const loading = getLoadingState(state);
+  const error = getErrorState(state);
+  return { todoLists, loading, error };
 };
 
 export default connect(mapStateToProps, mapDispatchToProps)(TodoLists);

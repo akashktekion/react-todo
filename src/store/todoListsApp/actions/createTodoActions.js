@@ -1,3 +1,4 @@
+import { getData } from "../utilities/apiCalls";
 import {
   ADD_TODO_ITEM,
   ADD_TODO_LIST,
@@ -10,6 +11,9 @@ import {
   UPDATE_TODO_ITEM,
   SET_INPUT_TEXT,
   SET_EDTING_ITEM_ID,
+  DATA_REQUEST,
+  DATA_SUCCESS,
+  DATA_ERROR,
 } from "./actionTypes";
 
 export const addTodoList = (input) => ({
@@ -66,3 +70,29 @@ export const setEditingItemId = (todoItemId) => ({
   type: SET_EDTING_ITEM_ID,
   payload: { todoItemId },
 });
+
+const dataRequest = () => ({
+  type: DATA_REQUEST,
+});
+
+const dataSuccess = (data) => ({
+  type: DATA_SUCCESS,
+  payload: data,
+});
+
+const dataError = (error) => ({
+  type: DATA_ERROR,
+  payload: { error: error },
+});
+
+export const fetchData = () => {
+  return async (dispatch) => {
+    try {
+      dispatch(dataRequest());
+      const data = await getData();
+      dispatch(dataSuccess(data));
+    } catch (err) {
+      dispatch(dataError(err.message));
+    }
+  };
+};

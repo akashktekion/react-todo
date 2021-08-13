@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import s from "./todoItems.module.scss";
 import TodoItem from "../../atoms/todoItem";
 
-const TodoItems = ({ todoListId, todoList, type }) => {
+const TodoItems = ({ todoListId, todoList, type, updateInput }) => {
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -32,6 +32,7 @@ const TodoItems = ({ todoListId, todoList, type }) => {
               key={todoItem.todoItemId}
               todoItem={todoItem}
               todoListId={todoListId}
+              updateInput={updateInput}
             />
           ))}
 
@@ -41,10 +42,18 @@ const TodoItems = ({ todoListId, todoList, type }) => {
   );
 };
 
+TodoItems.defaultProps = {
+  todoListId: "",
+  todoList: [],
+  type: "",
+  updateInput: () => {},
+};
+
 TodoItems.propTypes = {
   todoListId: PropTypes.string.isRequired,
   todoList: PropTypes.array.isRequired,
   type: PropTypes.string.isRequired,
+  updateInput: PropTypes.func,
 };
 
 export default TodoItems;

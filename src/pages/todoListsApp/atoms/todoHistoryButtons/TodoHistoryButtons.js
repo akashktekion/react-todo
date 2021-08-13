@@ -48,6 +48,12 @@ const TodoHistoryButtons = ({
   );
 };
 
+TodoHistoryButtons.defaultProps = {
+  setEditingItemId: () => {},
+  nextTodoList: null,
+  prevTodoList: null,
+};
+
 TodoHistoryButtons.propTypes = {
   setEditingItemId: PropTypes.func.isRequired,
   nextTodoList: PropTypes.object.isRequired,

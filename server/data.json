@@ -1,0 +1,53 @@
+{
+  "todoListsApp": {
+    "todoListsMap": {
+      "1": {
+        "todoListId": "1",
+        "todoListName": "a",
+        "todoItemsMap": {
+          "1628845878017": {
+            "todoItemId": "1628845878017",
+            "todoItemName": "1",
+            "isCompleted": false
+          },
+          "1628845878753": {
+            "todoItemId": "1628845878753",
+            "todoItemName": "2",
+            "isCompleted": false
+          },
+          "1628845879400": {
+            "todoItemId": "1628845879400",
+            "todoItemName": "3",
+            "isCompleted": true
+          },
+          "1628845879908": {
+            "todoItemId": "1628845879908",
+            "todoItemName": "3",
+            "isCompleted": false
+          },
+          "1628845880329": {
+            "todoItemId": "1628845880329",
+            "todoItemName": "5",
+            "isCompleted": true
+          }
+        }
+      },
+      "2": {
+        "todoListId": "2",
+        "todoListName": "b",
+        "todoItemsMap": {}
+      },
+      "3": {
+        "todoListId": "3",
+        "todoListName": "c",
+        "todoItemsMap": {}
+      },
+      "4": {
+        "todoListId": "4",
+        "todoListName": "d",
+        "todoItemsMap": {}
+      }
+    },
+    "nextId": 5
+  }
+}

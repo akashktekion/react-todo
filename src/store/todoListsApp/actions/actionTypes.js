@@ -13,3 +13,7 @@ export const UPDATE_TODO_ITEM = "updateTodoItem";
 export const GET_TODO_LISTS = "getTodoLists";
 export const GET_TODO_LIST = "getTodoList";
 export const GET_TODO_ITEMS = "getTodoItems";
+
+export const DATA_REQUEST = "dataRequest";
+export const DATA_SUCCESS = "dataSuccess";
+export const DATA_ERROR = "dataError";

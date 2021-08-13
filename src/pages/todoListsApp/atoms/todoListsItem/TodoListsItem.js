@@ -15,6 +15,11 @@ const TodoListsItem = ({ todoList, goToTodoList }) => {
   );
 };
 
+TodoListsItem.defaultProps = {
+  todoList: null,
+  goToTodoList: () => {},
+};
+
 TodoListsItem.propTypes = {
   todoList: PropTypes.object.isRequired,
   goToTodoList: PropTypes.func.isRequired,

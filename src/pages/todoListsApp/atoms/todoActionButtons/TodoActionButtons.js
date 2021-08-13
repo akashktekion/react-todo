@@ -46,6 +46,14 @@ const TodoActionButtons = ({
   );
 };
 
+TodoActionButtons.defaultProps = {
+  todoListId: "",
+  checkAll: () => {},
+  unCheckAll: () => {},
+  removeAllChecked: () => {},
+  removeAll: () => {},
+};
+
 TodoActionButtons.propTypes = {
   todoListId: PropTypes.string.isRequired,
   checkAll: PropTypes.func.isRequired,

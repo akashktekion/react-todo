@@ -6,7 +6,6 @@ import PropTypes from "prop-types";
 import {
   removeTodo,
   toggleTaskCompleted,
-  setInputText,
   setEditingItemId,
 } from "../../../../store/todoListsApp/actions/createTodoActions";
 import s from "./todoItem.module.scss";
@@ -14,9 +13,9 @@ import s from "./todoItem.module.scss";
 const TodoItem = ({
   todoListId,
   todoItem,
+  updateInput,
   removeTodo,
   toggleTaskCompleted,
-  setInputText,
   setEditingItemId,
 }) => {
   const checkBoxToggleHandler = useCallback(
@@ -31,10 +30,10 @@ const TodoItem = ({
 
   const editTodoHandler = useCallback(
     (e) => {
-      setInputText(todoItem.todoItemName);
+      updateInput(todoItem.todoItemName);
       setEditingItemId(todoItem.todoItemId);
     },
-    [todoItem.todoItemName, setInputText, setEditingItemId, todoItem.todoItemId]
+    [setEditingItemId, todoItem.todoItemId, updateInput, todoItem.todoItemName]
   );
 
   return (
@@ -57,12 +56,21 @@ const TodoItem = ({
   );
 };
 
+TodoItem.defaultProps = {
+  todoListId: "",
+  todoItem: null,
+  updateInput: () => {},
+  removeTodo: () => {},
+  toggleTaskCompleted: () => {},
+  setEditingItemId: () => {},
+};
+
 TodoItem.propTypes = {
   todoListId: PropTypes.string.isRequired,
   todoItem: PropTypes.object.isRequired,
+  updateInput: PropTypes.func,
   removeTodo: PropTypes.func.isRequired,
   toggleTaskCompleted: PropTypes.func.isRequired,
-  setInputText: PropTypes.func.isRequired,
   setEditingItemId: PropTypes.func.isRequired,
 };
 
@@ -71,7 +79,6 @@ const mapDispatchToProps = (dispatch) => ({
     dispatch(removeTodo(todoListId, todoItemId)),
   toggleTaskCompleted: (todoListId, todoItemId) =>
     dispatch(toggleTaskCompleted(todoListId, todoItemId)),
-  setInputText: (input) => dispatch(setInputText(input)),
   setEditingItemId: (todoItemId) => dispatch(setEditingItemId(todoItemId)),
 });
 
